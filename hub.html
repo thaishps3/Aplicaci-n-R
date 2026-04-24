@@ -28,7 +28,7 @@
 <script src="js/auth.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        if (!auth.verificarSesion('login.html')) return;
+        if (!auth.verificarSesion('index.html')) return;
 
         const s = auth.sesion;
         const rolLabel = s.rol === 'admin' ? 'Admin' : 'Auxiliar';
@@ -37,7 +37,7 @@
         document.getElementById('hubSesion').innerHTML = `
             <span class="hub-nombre">${s.nombre}</span>
             <span class="hub-rol" style="${rolColor}">${rolLabel}</span>
-            <button class="hub-salir" onclick="auth.cerrarSesion('login.html')">Salir</button>`;
+            <button class="hub-salir" onclick="auth.cerrarSesion('index.html')">Salir</button>`;
 
         const modulos = [
             {
@@ -48,7 +48,7 @@
                 roles: ['admin', 'auxiliar']
             },
             {
-                nombre: 'Atención Focal',
+                nombre: 'Planning',
                 desc: 'Control de cuidados y turno activo',
                 icon: '🏥',
                 url: 'planning.html',

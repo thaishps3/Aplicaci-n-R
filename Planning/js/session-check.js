@@ -2,7 +2,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof auth === 'undefined' || !auth.sesion) {
-        window.location.href = 'login.html';
+        window.location.href = 'index.html';
         return;
     }
 
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         info.innerHTML = `
             <span style="font-size:12px;font-weight:500;color:white;">${s.nombre}</span>
             <span style="${rolColor};font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600;margin-left:6px;">${s.rol === 'admin' ? 'Admin' : 'Auxiliar'}</span>
-            <button onclick="auth.cerrarSesion('login.html')"
+            <button onclick="auth.cerrarSesion('index.html')"
                 style="font-size:11px;margin-left:8px;
                        background:rgba(255,255,255,0.2);
                        border:1px solid rgba(255,255,255,0.4);

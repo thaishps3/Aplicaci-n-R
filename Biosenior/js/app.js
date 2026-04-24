@@ -389,6 +389,10 @@ const store = {
         toggle.style.borderBottomRightRadius = open ? '0' : '10px';
         toggle.style.borderBottom = open ? 'none' : '';
         if (open) renderTabla();
+
+        // Mostrar/ocultar botón flotante
+        const btnFlotante = document.getElementById('btnPrintFlotante');
+        if (btnFlotante) btnFlotante.classList.toggle('visible', open);
     }
 
     function actualizarSubtitulo() {
@@ -626,6 +630,89 @@ const store = {
     }
 
 
+    // ── IMPORTAR DESDE EXCEL ─────────────────────────────────────────
+    function leerExcel(file, callback) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const data = new Uint8Array(e.target.result);
+            const wb = XLSX.read(data, { type: 'array' });
+            const ws = wb.Sheets[wb.SheetNames[0]];
+            const rows = XLSX.utils.sheet_to_json(ws, { defval: '' });
+            callback(rows);
+        };
+        reader.readAsArrayBuffer(file);
+    }
+
+    function importarExcelUsuarios(event) {
+        const file = event.target.files[0];
+        event.target.value = '';
+        if (!file) return;
+        leerExcel(file, (rows) => {
+            const nuevos = rows
+                .filter(r => r['Nombre completo'] && r['Género'])
+                .map(r => ({
+                    nombre: String(r['Nombre completo']).trim(),
+                    genero: String(r['Género']).trim()
+                }));
+            if (nuevos.length === 0) {
+                mostrarToast('❌ No se encontraron usuarios válidos');
+                return;
+            }
+            // Añadir solo los que no existen ya (sin duplicados por nombre)
+            const nombresExistentes = new Set(usuarios.map(u => u.nombre.toLowerCase()));
+            const sinDuplicados = nuevos.filter(u => !nombresExistentes.has(u.nombre.toLowerCase()));
+            const yaExistian = nuevos.length - sinDuplicados.length;
+
+            if (sinDuplicados.length === 0) {
+                mostrarToast('⚠ Todos los usuarios ya existen en la lista');
+                return;
+            }
+            if (!confirm(`Se añadirán ${sinDuplicados.length} usuarios nuevos.${yaExistian > 0 ? ' (' + yaExistian + ' ya existían y se omiten)' : ''}`)) return;
+
+            usuarios = [...usuarios, ...sinDuplicados].sort((a, b) => a.nombre.localeCompare(b.nombre));
+            store.set('sgp_usuarios', usuarios);
+            renderGestion();
+            actualizarSelectUsuarios();
+            renderABC();
+            renderAlertas();
+            mostrarToast(`✅ ${sinDuplicados.length} usuarios añadidos`);
+        });
+    }
+
+    function importarExcelCuentas(event) {
+        const file = event.target.files[0];
+        event.target.value = '';
+        if (!file) return;
+        leerExcel(file, (rows) => {
+            const nuevas = rows
+                .filter(r => r['Nombre completo'] && r['Rol'] && r['PIN (4 dígitos)'])
+                .map(r => ({
+                    nombre: String(r['Nombre completo']).trim(),
+                    rol:    String(r['Rol']).trim().toLowerCase(),
+                    pin:    String(r['PIN (4 dígitos)']).trim().padStart(4, '0')
+                }))
+                .filter(c => c.rol === 'admin' || c.rol === 'auxiliar');
+            if (nuevas.length === 0) {
+                mostrarToast('❌ No se encontraron cuentas válidas');
+                return;
+            }
+            // Añadir solo las que no existen ya (sin duplicados por nombre)
+            const nombresExistentes = new Set(auth.cuentas.map(c => c.nombre.toLowerCase()));
+            const sinDuplicados = nuevas.filter(c => !nombresExistentes.has(c.nombre.toLowerCase()));
+            const yaExistian = nuevas.length - sinDuplicados.length;
+
+            if (sinDuplicados.length === 0) {
+                mostrarToast('⚠ Todas las cuentas ya existen');
+                return;
+            }
+            if (!confirm(`Se añadirán ${sinDuplicados.length} cuentas nuevas.${yaExistian > 0 ? ' (' + yaExistian + ' ya existían y se omiten)' : ''}`)) return;
+
+            auth.cuentas = [...auth.cuentas, ...sinDuplicados];
+            renderGestionAuxiliares();
+            mostrarToast(`✅ ${sinDuplicados.length} cuentas añadidas`);
+        });
+    }
+
     function cargarDatosPrueba() {
         const data = {
             "usuarios": [
@@ -667,7 +754,7 @@ const store = {
             <span class="sesion-nombre">${s.nombre}</span>
             <span class="sesion-rol" style="${rolColor};padding:2px 10px;border-radius:20px;font-size:11px;font-weight:600;">${s.rol === 'admin' ? 'Admin' : 'Auxiliar'}</span>
             <button class="sesion-hub" onclick="window.location.href='hub.html'">← Hub</button>
-            <button class="sesion-salir" onclick="auth.cerrarSesion('login.html')">Salir</button>`;
+            <button class="sesion-salir" onclick="auth.cerrarSesion('index.html')">Salir</button>`;
     }
 
     function iniciarApp() {

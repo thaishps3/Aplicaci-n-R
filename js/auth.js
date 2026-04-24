@@ -14,7 +14,7 @@ const auth = {
     },
 
     // Verifica sesión activa — si no hay, redirige al hub
-    verificarSesion(rutaHub = '../login.html') {
+    verificarSesion(rutaHub = '../index.html') {
         if (!this.sesion) {
             window.location.href = rutaHub;
             return false;
@@ -22,7 +22,7 @@ const auth = {
         return true;
     },
 
-    cerrarSesion(rutaHub = '../login.html') {
+    cerrarSesion(rutaHub = '../index.html') {
         localStorage.removeItem('sgp_sesion');
         window.location.href = rutaHub;
     }
