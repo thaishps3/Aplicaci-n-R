@@ -657,7 +657,7 @@
 /* ── Ajuste general de legibilidad móvil ───────────────────── */
 
 body {
-    font-size: 16px;
+    font-size: 17px;
 }
 
 label,
@@ -665,7 +665,7 @@ input,
 select,
 textarea,
 button {
-    font-size: 15px;
+    font-size: 16px;
 }
 
 .label-pequena,
@@ -674,7 +674,7 @@ button {
 .quien-icono-label,
 .ultimos-tit,
 .hist-toggle-sub {
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .reg-nombre,
