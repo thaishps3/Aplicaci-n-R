@@ -631,3 +631,25 @@
         padding-top: 10px !important;
     }
 }
+
+.btn-ver-alertas {
+    width: 100%;
+    margin-top: 8px;
+    padding: 10px 14px;
+    border: none;
+    border-radius: 14px;
+    background: #fff3cd;
+    color: #7a4a00;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(122, 74, 0, 0.12);
+}
+
+.btn-ver-alertas:hover {
+    background: #ffe8a1;
+}
+
+#listaAlertasResidentes {
+    margin-top: 10px;
+}

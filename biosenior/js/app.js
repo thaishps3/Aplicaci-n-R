@@ -82,26 +82,64 @@ const store = {
     }
 
     function renderAlertas() {
-        const bloque = document.getElementById('bloqueAlertas');
-        const alertas = [];
-        usuarios.forEach(u => {
-            const nombre = u.nombre || u;
-            const dias = diasSinDeposicion(nombre);
-            if (dias >= 2) alertas.push({ nombre, dias });
-        });
-        alertas.sort((a, b) => b.dias - a.dias);
-        if (alertas.length === 0) { bloque.style.display = 'none'; bloque.innerHTML = ''; return; }
-        const filas = alertas.map(a => {
-            const nivel = a.dias >= 3 ? 'nivel-3' : 'nivel-2';
-            return `<div class="alerta-fila ${nivel}">
-                <span class="alerta-nombre-txt ${nivel}">${a.nombre}</span>
-                <span class="alerta-pill ${nivel}">⚠ ${a.dias} días</span>
-            </div>`;
-        }).join('');
-        bloque.innerHTML = `<div class="alertas-bloque"><p class="alertas-titulo">⚠ Requieren atención</p>${filas}</div>`;
-        bloque.style.display = 'block';
+    const bloque = document.getElementById('bloqueAlertas');
+
+    if (!bloque) return;
+
+    const alertas = [];
+
+    usuarios.forEach(u => {
+        const nombre = u.nombre || u;
+        const dias = diasSinDeposicion(nombre);
+
+        if (dias >= 2) {
+            alertas.push({ nombre, dias });
+        }
+    });
+
+    alertas.sort((a, b) => b.dias - a.dias);
+
+    if (alertas.length === 0) {
+        bloque.style.display = 'none';
+        bloque.innerHTML = '';
+        return;
     }
 
+    const filas = alertas.map(a => {
+        const nivel = a.dias >= 3 ? 'nivel-3' : 'nivel-2';
+
+        return `
+            <div class="alerta-fila ${nivel}">
+                <span class="alerta-nombre-txt ${nivel}">${a.nombre}</span>
+                <span class="alerta-pill ${nivel}">⚠ ${a.dias} días</span>
+            </div>
+        `;
+    }).join('');
+
+    bloque.innerHTML = `
+        <div class="alertas-bloque">
+            <p class="alertas-titulo">⚠ Atención: hay residentes sin evacuación prolongada</p>
+
+            <button class="btn-ver-alertas" onclick="toggleListaAlertas()">
+                Ver residentes en alerta (${alertas.length})
+            </button>
+
+            <div id="listaAlertasResidentes" style="display:none;">
+                ${filas}
+            </div>
+        </div>
+    `;
+
+    bloque.style.display = 'block';
+}
+
+function toggleListaAlertas() {
+    const lista = document.getElementById('listaAlertasResidentes');
+
+    if (!lista) return;
+
+    lista.style.display = lista.style.display === 'none' ? 'block' : 'none';
+}
     // ── Gestión de usuarios ────────────────────────────────────────────────────
     function selectGenAdmin(g, el) {
         tempGen = g;
