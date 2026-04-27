@@ -1,3 +1,8 @@
+// NOTA DE NOMENCLATURA:
+// En este archivo se mantiene el nombre interno "usuarios" por compatibilidad
+// con versiones anteriores del MVP y con los backups existentes.
+// En la interfaz, "usuarios" se refiere a residentes de la residencia.
+
 const store = {
         get: (k) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch(e) { return null; } },
         set: (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} }
@@ -140,7 +145,7 @@ function toggleListaAlertas() {
 
     lista.style.display = lista.style.display === 'none' ? 'block' : 'none';
 }
-    // ── Gestión de usuarios ────────────────────────────────────────────────────
+    // ── Gestión de residentes ────────────────────────────────────────────────────
     function selectGenAdmin(g, el) {
         tempGen = g;
         document.querySelectorAll('.btn-o[onclick*="selectGenAdmin"]').forEach(b => b.classList.remove('active'));
@@ -212,7 +217,7 @@ function toggleListaAlertas() {
 
     function guardar() {
         if (!registroActual.nombre || !registroActual.depo || !registroActual.mic) {
-            return mostrarToast("⚠ Selecciona usuario y datos");
+            return mostrarToast("⚠ Selecciona residente y datos");
         }
         const ahora = new Date();
         const uObj = usuarios.find(u => u.nombre === registroActual.nombre);
@@ -243,7 +248,7 @@ function toggleListaAlertas() {
         mostrarToast("✅ Guardado: " + nombreGuardado);
     }
 
-    // ── ABC y lista de usuarios ────────────────────────────────────────────────
+    // ── ABC y lista de residentes ────────────────────────────────────────────────
     function renderABC() {
         const bar = document.getElementById('abcBar');
         bar.innerHTML = "";
@@ -503,7 +508,7 @@ function toggleListaAlertas() {
 
     function actualizarSelectUsuarios() {
         const select = document.getElementById('filtroUsuario');
-        select.innerHTML = '<option value="">Seleccionar usuario...</option>';
+        select.innerHTML = '<option value="">Seleccionar residente...</option>';
         usuarios.forEach(p => {
             const nombre = p.nombre || p;
             select.innerHTML += `<option value="${nombre}">${nombre}</option>`;
@@ -512,7 +517,7 @@ function toggleListaAlertas() {
 
     // ── Backup ─────────────────────────────────────────────────────────────────
     function exportarDatos() {
-        // Backup clínico: usuarios (ancianos) + registros
+        // Backup clínico: residentes + registros
         const data = { usuarios, logs };
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
         const a = document.createElement('a');
@@ -565,7 +570,7 @@ function toggleListaAlertas() {
             if (!Array.isArray(data.usuarios) || !Array.isArray(data.logs)) {
                 alert("❌ Formato de backup inválido."); return;
             }
-            const ok = confirm(`¿Importar backup?\n${data.usuarios.length} usuarios · ${data.logs.length} registros`);
+            const ok = confirm(`¿Importar backup?\n${data.usuarios.length} residentes · ${data.logs.length} registros`);
             if (!ok) return;
             usuarios = data.usuarios;
             logs = data.logs;
@@ -581,7 +586,7 @@ function toggleListaAlertas() {
             renderABC();
             renderTabla();
             renderAlertas();
-            mostrarToast('✅ ' + data.usuarios.length + ' usuarios, ' + data.logs.length + ' registros importados');
+            mostrarToast('✅ ' + data.usuarios.length + ' residentes, ' + data.logs.length + ' registros importados');
         };
         reader.readAsText(file);
     }
@@ -598,7 +603,7 @@ function toggleListaAlertas() {
         const fF = document.getElementById('filtro').value;
         const fU = document.getElementById('filtroUsuario').value;
         const fechaTexto = fF ? new Date(fF + 'T00:00:00').toLocaleDateString('es-ES') : 'Historial completo';
-        let quienTexto = 'Todos los usuarios';
+        let quienTexto = 'Todos los residentes';
         if (filtroQuienModo === 'usuario' && fU) quienTexto = fU;
         else if (filtroQuienModo === 'Hombre') quienTexto = 'Solo hombres';
         else if (filtroQuienModo === 'Mujer') quienTexto = 'Solo mujeres';
@@ -654,7 +659,7 @@ function toggleListaAlertas() {
             <div class="rb">
                 <table>
                     <thead>
-                        <tr><th>Hora</th><th>Usuario</th><th>Auxiliar</th><th>Turno</th><th>Deposición</th><th>Micción</th><th>Observaciones</th></tr>
+                        <tr><th>Hora</th><th>Residente</th><th>Auxiliar</th><th>Turno</th><th>Deposición</th><th>Micción</th><th>Observaciones</th></tr>
                     </thead>
                     <tbody>
                         ${filas || '<tr><td colspan="7" style="text-align:center;color:#aaa;padding:16px;">Sin registros</td></tr>'}
@@ -693,7 +698,7 @@ function toggleListaAlertas() {
                     genero: String(r['Género']).trim()
                 }));
             if (nuevos.length === 0) {
-                mostrarToast('❌ No se encontraron usuarios válidos');
+                mostrarToast('❌ No se encontraron residentes válidos');
                 return;
             }
             // Añadir solo los que no existen ya (sin duplicados por nombre)
@@ -702,10 +707,10 @@ function toggleListaAlertas() {
             const yaExistian = nuevos.length - sinDuplicados.length;
 
             if (sinDuplicados.length === 0) {
-                mostrarToast('⚠ Todos los usuarios ya existen en la lista');
+                mostrarToast('⚠ Todos los residentes ya existen en la lista');
                 return;
             }
-            if (!confirm(`Se añadirán ${sinDuplicados.length} usuarios nuevos.${yaExistian > 0 ? ' (' + yaExistian + ' ya existían y se omiten)' : ''}`)) return;
+            if (!confirm(`Se añadirán ${sinDuplicados.length} residentes nuevos.${yaExistian > 0 ? ' (' + yaExistian + ' ya existían y se omiten)' : ''}`)) return;
 
             usuarios = [...usuarios, ...sinDuplicados].sort((a, b) => a.nombre.localeCompare(b.nombre));
             store.set('sgp_usuarios', usuarios);
@@ -713,7 +718,7 @@ function toggleListaAlertas() {
             actualizarSelectUsuarios();
             renderABC();
             renderAlertas();
-            mostrarToast(`✅ ${sinDuplicados.length} usuarios añadidos`);
+            mostrarToast(`✅ ${sinDuplicados.length} residentes añadidos`);
         });
     }
 

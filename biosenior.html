@@ -44,14 +44,14 @@
         </button>
         <div class="content-admin no-print" id="contentAdmin">
             <div style="padding:15px; background:#f8f9fa;">
-                <label style="margin-top:0;">Añadir usuario (anciano):</label>
-                <input type="text" id="nuevoNombre" placeholder="Nombre del usuario...">
+                <label style="margin-top:0;">Añadir residente:</label>
+                <input type="text" id="nuevoNombre" placeholder="Nombre del residente...">
                 <div style="display:flex; gap:10px; margin:10px 0;">
                     <div id="genH" class="btn-o" style="flex:1" onclick="selectGenAdmin('Hombre', this)">♂️ Hombre</div>
                     <div id="genM" class="btn-o" style="flex:1" onclick="selectGenAdmin('Mujer', this)">♀️ Mujer</div>
                 </div>
-                <button onclick="agregarUsuario()" style="width:100%; background:var(--blue); color:white; border:none; padding:12px; border-radius:8px; font-weight:bold;">Guardar usuario</button>
-                <p class="label-pequena" style="margin-top:15px;">Lista de usuarios:</p>
+                <button onclick="agregarUsuario()" style="width:100%; background:var(--blue); color:white; border:none; padding:12px; border-radius:8px; font-weight:bold;">Guardar residente</button>
+                <p class="label-pequena" style="margin-top:15px;">Lista de residentes:</p>
                 <div id="gestionLista" style="max-height:100px; overflow-y:auto; border:1px solid #e0e0e0; border-radius:6px; background:white; font-size:13px;"></div>
 
                 <hr style="border:none; border-top:1px solid #eee; margin:15px 0;">
@@ -67,7 +67,7 @@
                 <div id="gestionAuxiliares" style="max-height:100px; overflow-y:auto; border:1px solid #e0e0e0; border-radius:6px; background:white; font-size:13px;"></div>
 
                 <hr style="border:none; border-top:1px solid #eee; margin:15px 0;">
-                <p class="label-pequena">📋 Backup clínico (usuarios + registros):</p>
+                <p class="label-pequena">📋 Backup clínico (residentes + registros):</p>
                 <div class="backup-section">
                     <button class="btn-backup" onclick="exportarDatos()">📤 Exportar</button>
                     <button class="btn-backup" onclick="document.getElementById('importFile').click()">📥 Importar</button>
@@ -89,7 +89,7 @@
 
         <!-- Solo visible para auxiliares -->
         <div id="bloqueRegistro">
-            <label>1. Seleccionar Usuario</label>
+            <label>1. Seleccionar residente</label>
             <div class="abc-bar" id="abcBar"></div>
             <div id="listaUsuarios"></div>
             <label>2. Tipo de Deposición</label>
@@ -141,7 +141,7 @@
                     <button class="quien-icono" onclick="selQuien('Mujer', this, 'act-pink')">👩‍🦳<span class="quien-icono-label">Mujeres</span></button>
                 </div>
                 <select id="filtroUsuario" onchange="selUsuarioConcreto()" style="margin-bottom:0;">
-                    <option value="">Un usuario concreto...</option>
+                    <option value="">Un residente concreto...</option>
                 </select>
                 <hr style="border:none; border-top:0.5px solid #dde4ea; margin:10px 0;">
                 <p id="subtituloHistorial" style="font-size:11px; color:#4a7a8a; margin:0 0 10px;"></p>
@@ -150,7 +150,7 @@
                         <thead>
                             <tr>
                                 <th>Hora</th>
-                                <th>Usuario</th>
+                                <th>Residente</th>
                                 <th>Auxiliar</th>
                                 <th>Turno</th>
                                 <th>Depo</th>
