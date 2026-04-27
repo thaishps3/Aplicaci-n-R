@@ -680,7 +680,7 @@ button {
 .reg-nombre,
 .reg-mini-nombre,
 .alerta-nombre-txt {
-    font-size: 14px;
+    font-size: 15px;
 }
 
 .reg-hora,
@@ -689,5 +689,5 @@ button {
 .pill,
 .mpill,
 .alerta-pill {
-    font-size: 12px;
+    font-size: 13px;
 }
