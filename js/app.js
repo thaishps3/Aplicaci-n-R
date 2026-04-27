@@ -700,7 +700,7 @@ const store = {
         bar.innerHTML = `
             <span class="sesion-nombre">${s.nombre}</span>
             <span class="sesion-rol" style="${rolColor};padding:2px 10px;border-radius:20px;font-size:11px;font-weight:600;">${s.rol === 'admin' ? 'Admin' : 'Auxiliar'}</span>
-            <button class="sesion-hub" onclick="window.location.href='hub.html'">← Hub</button>
+            <button class="sesion-hub" onclick="window.location.href='menu-principal.html'">← Menú principal</button>
             <button class="sesion-salir" onclick="auth.cerrarSesion('login.html')">Salir</button>`;
     }
 
