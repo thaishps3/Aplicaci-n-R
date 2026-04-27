@@ -168,7 +168,7 @@ function addIncidencia(id) {
     render();
 }
 
-/* ── CRUD USUARIOS ────────────────────────────────────────── */
+/* ── CRUD RESIDENTES ────────────────────────────────────────── */
 function saveUser() {
     const id   = document.getElementById('editId').value;
     const user = {
