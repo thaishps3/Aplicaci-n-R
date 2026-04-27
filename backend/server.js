@@ -4,6 +4,7 @@ const path = require('path');
 const db = require('./database');
 const residentesRoutes = require('./routes/residentes.routes');
 const usuariosRoutes = require('./routes/usuarios.routes');
+const registrosBioseniorRoutes = require('./routes/registros-biosenior.routes');
 const app = express();
 
 const PORT = 3000;
@@ -13,6 +14,7 @@ app.use(cors());
 app.use(express.json());
 app.use('/api/residentes', residentesRoutes);
 app.use('/api/usuarios', usuariosRoutes);
+app.use('/api/registros-biosenior', registrosBioseniorRoutes);
 
 // Ruta de prueba
 app.get('/api/health', (req, res) => {
