@@ -653,3 +653,41 @@
 #listaAlertasResidentes {
     margin-top: 10px;
 }
+
+/* ── Ajuste general de legibilidad móvil ───────────────────── */
+
+body {
+    font-size: 16px;
+}
+
+label,
+input,
+select,
+textarea,
+button {
+    font-size: 15px;
+}
+
+.label-pequena,
+.filtro-label,
+.login-label,
+.quien-icono-label,
+.ultimos-tit,
+.hist-toggle-sub {
+    font-size: 12px;
+}
+
+.reg-nombre,
+.reg-mini-nombre,
+.alerta-nombre-txt {
+    font-size: 14px;
+}
+
+.reg-hora,
+.reg-obs,
+.reg-borrar,
+.pill,
+.mpill,
+.alerta-pill {
+    font-size: 12px;
+}
